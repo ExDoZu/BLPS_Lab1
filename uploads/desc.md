@@ -1,0 +1,1 @@
+Pictures must be uploaded to the same directory as this markdown file.
