@@ -24,7 +24,7 @@ import org.springframework.http.MediaType;
 @RequestMapping("/pictures")
 public class PictureController {
 
-    @GetMapping("/get/{name}")
+    @GetMapping("/picture/{name}")
     public ResponseEntity<byte[]> getMethodName(@PathVariable String name) {
 
         Path path = Paths.get("./uploads/" + name);
@@ -39,7 +39,7 @@ public class PictureController {
 
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/picture")
     public ResponseEntity<?> postMethodName(@RequestParam("file") MultipartFile file) {
 
         if (file.isEmpty()) {

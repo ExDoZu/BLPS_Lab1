@@ -1,5 +1,6 @@
 package com.blps.lab1.controllers;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -44,7 +46,7 @@ public class ApiController {
     private final AddressValidationService addressValidationService;
     private final PostValidationService postValidationService;
 
-    @PostMapping("/archivePost")
+    @DeleteMapping("/post")
     public ResponseEntity<?> archivePost(@RequestParam Map<String, String> params,
             @RequestHeader Map<String, String> headers) {
 
@@ -80,7 +82,7 @@ public class ApiController {
 
     }
 
-    @GetMapping("/getAddresses")
+    @GetMapping("/addresses")
     public ResponseEntity<?> getAddresses(@RequestParam Map<String, String> params) {
 
         if (!addressValidationService.checkAddressParams(params)) {
@@ -110,29 +112,28 @@ public class ApiController {
     final double PRICE_PER_DAY = 100;
 
     @Column(nullable = false)
-    @PostMapping("/pay")
-    public ResponseEntity<?> getMethodName(@RequestParam Map<String, String> params,
+    @PostMapping("/payment")
+    public ResponseEntity<?> getMethodName(@RequestBody Map<String, Object> body,
             @RequestHeader Map<String, String> headers) {
 
-        String postIdStr = params.get("postId");
-        if (postIdStr == null || !postIdStr.matches("\\d+")) {
-            return ResponseEntity.badRequest().body("Invalid post id");
+        Long postId;
+        String payUntilStr;
+        try {
+            postId = (Long) body.get("postId");
+            payUntilStr = (String) body.get("payUntil");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid request");
         }
 
-        String payUntilStr = params.get("payUntil");
         if (payUntilStr == null || !payUntilStr.matches("\\d{2}.\\d{2}.\\d{4}")) {
             return ResponseEntity.badRequest().body("Invalid date format");
         }
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-
-        Long postId;
         Date date;
         try {
-            postId = Long.parseLong(postIdStr);
             date = formatter.parse(payUntilStr);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().body("Invalid date");
         }
 
         // get current date
@@ -228,7 +229,7 @@ public class ApiController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/post")
     public ResponseEntity<?> getPosts(@RequestParam Map<String, String> params) {
 
         String city, street, stationName;
