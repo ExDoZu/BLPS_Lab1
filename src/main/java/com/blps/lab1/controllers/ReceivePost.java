@@ -42,9 +42,10 @@ public class ReceivePost {
                 "Metro id: " + metroId + "\n" +
                 "Paths to photos: " + pathsToPhotos + "\n";
     }
-    
+
     public Post toPostNoFK() {
         Post post = new Post();
+        post.setPathsToPhotos(pathsToPhotos);
         post.setTitle(title);
         post.setDescription(description);
         post.setPrice(price);

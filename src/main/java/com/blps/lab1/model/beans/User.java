@@ -35,7 +35,7 @@ public class User {
 
     private String passwordHash;
 
-    @Column(columnDefinition = "double default 0", nullable = false)
+    @Column(columnDefinition = "float8 default 0", nullable = false)
     private double balance;
 
 }
