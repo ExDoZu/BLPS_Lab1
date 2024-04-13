@@ -1,5 +1,7 @@
 package com.blps.lab1.model.repository;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                         "and (:max_floor is null or p.floor <= :max_floor) " +
                         "and (:station_name is null or p.metro.name = :station_name) " +
                         "and (:branch_number is null or p.metro.branchNumber = :branch_number)")
-        List<Post> findByMany(
+        Page<Post> findByMany(
                         @Param("city") String city,
                         @Param("street") String street,
                         @Param("hn") Integer houseNumber,
@@ -38,5 +40,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                         @Param("min_floor") Integer minFloor,
                         @Param("max_floor") Integer maxFloor,
                         @Param("station_name") String stationName,
-                        @Param("branch_number") Integer branchNumber);
+                        @Param("branch_number") Integer branchNumber,
+                        Pageable pageable);
+
+        List<Post> findByArchivedAndApproved(Boolean archived, Boolean approved);
 }

@@ -36,6 +36,8 @@ public class Post {
     @Column(nullable = false)
     private Boolean archived;
 
+    private Boolean approved;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -63,5 +65,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "metro_id")
     private Metro metro;
-
 }

@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "\"user\"")
+@Table(name = "\"users\"")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_seq")
@@ -37,5 +37,8 @@ public class User {
 
     @Column(columnDefinition = "float8 default 0", nullable = false)
     private double balance;
+
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private boolean isModerator;
 
 }
