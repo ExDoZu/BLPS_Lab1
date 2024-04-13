@@ -292,6 +292,8 @@ public class ApiController {
         for (Post post : getResult.getPosts()) {
             responsePosts.add(new ResponseSimplePost(post));
         }
+        if (page >= getResult.getTotalPages())
+            return ResponseEntity.badRequest().body("No such page");
         var response = new HashMap<String, Object>();
         response.put("posts", responsePosts);
         response.put("totalPages", getResult.getTotalPages());
