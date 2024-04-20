@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blps.lab1.controllers.dao.ReceivePayment;
+import com.blps.lab1.controllers.dto.ReceivePayment;
 import com.blps.lab1.exceptions.AccessDeniedException;
 
 import com.blps.lab1.model.services.PaymentService;

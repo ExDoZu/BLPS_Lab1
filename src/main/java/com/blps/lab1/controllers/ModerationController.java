@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blps.lab1.controllers.dao.ReceiveModerationApprovement;
-import com.blps.lab1.controllers.dao.ResponsePost;
+import com.blps.lab1.controllers.dto.ReceiveModerationApprovement;
+import com.blps.lab1.controllers.dto.ResponsePost;
 import com.blps.lab1.exceptions.AccessDeniedException;
 import com.blps.lab1.exceptions.NotFoundException;
 import com.blps.lab1.model.beans.Post;

@@ -1,4 +1,4 @@
-package com.blps.lab1.controllers.dao;
+package com.blps.lab1.controllers.dto;
 
 import java.util.Date;
 
