@@ -1,4 +1,4 @@
-package com.blps.lab1.controllers;
+package com.blps.lab1.controllers.dao;
 
 import com.blps.lab1.model.beans.Post;
 

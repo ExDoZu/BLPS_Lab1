@@ -41,14 +41,20 @@ public class PaymentService {
 
     final double PRICE_PER_DAY = 100;
 
-    public PayResult pay(Date date, Long postId, User me) throws AccessDeniedException, PaymentException {
-        // get current date
-        Date currentDate = Date.from(java.time.Instant.now());
-        // count days between current date and payUntil date
-        long diff = date.getTime() - currentDate.getTime();
+    public PayResult pay(Date date, Long postId, String userPhone) throws AccessDeniedException, PaymentException {
+        final User me = userRepository.findByPhoneNumber(userPhone);
+        if (me == null) {
+            throw new AccessDeniedException("No such user");
+        }
 
-        long days = diff / (24 * 60 * 60 * 1000);
-        double price = days * PRICE_PER_DAY;
+        final Date currentDateTime = Date.from(java.time.Instant.now());
+
+        final long diff = date.getTime() - currentDateTime.getTime();
+        if (diff <= 0) {
+            throw new PaymentException("Invalid date");
+        }
+        final long days = diff / (24 * 60 * 60 * 1000) + 1;
+        final double price = days * PRICE_PER_DAY;
 
         Post post = postRepository.findById(postId).orElse(null);
 
@@ -56,6 +62,10 @@ public class PaymentService {
 
         if (me.getId() != user.getId()) {
             throw new AccessDeniedException("Access denied. Not your post");
+        }
+
+        if (post.getPaidUntil() != null && !post.getPaidUntil().before(date)) {
+            throw new PaymentException("Post is already paid");
         }
 
         if (user.getBalance() < price) {

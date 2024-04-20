@@ -1,10 +1,9 @@
-package com.blps.lab1.controllers;
+package com.blps.lab1.controllers.dao;
 
 import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseMetro {

@@ -2,26 +2,24 @@ package com.blps.lab1.model.services;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AddressValidationService {
 
-    public boolean checkAddressParams(Map<String, String> params) {
+    public boolean checkAddressParams(String city, String street, Integer houseNumber, Character houseLetter) {
 
-        if (params.get("city") == null || params.get("city").length() == 0) {
+        if (city == null || city.length() == 0) {
             return false;
         }
-        if (params.get("street") != null && params.get("street").length() == 0) {
+        if (street != null && street.length() == 0) {
             return false;
         }
-        if (params.get("houseNumber") != null && !params.get("houseNumber").matches("\\d+")) {
+        if (houseNumber != null && houseNumber <= 0) {
             return false;
         }
-        if (params.get("houseLetter") != null && params.get("houseLetter").length() != 1) {
+        if (houseLetter != null && houseLetter < 'A') {
             return false;
         }
 

@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 
 @RestController
 @RequiredArgsConstructor
-public class PictureController {
+public class PicturesController {
     private final PictureService pictureService;
 
     @GetMapping("/pictures/{name}")

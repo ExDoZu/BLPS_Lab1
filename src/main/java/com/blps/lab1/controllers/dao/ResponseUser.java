@@ -1,11 +1,10 @@
-package com.blps.lab1.controllers;
+package com.blps.lab1.controllers.dao;
 
 import com.blps.lab1.model.beans.User;
 import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseUser {

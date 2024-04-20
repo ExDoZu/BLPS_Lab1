@@ -35,7 +35,7 @@ public class PostService {
     private final MetroValidationService metroValidationService;
     private final PostValidationService postValidationService;
 
-    public void post(String phone, Long addressID, Long metroID, Post post)
+    public Post post(String phone, Long addressID, Long metroID, Post post)
             throws InvalidDataException, NotFoundException, AccessDeniedException {
         User user = userRepository.findByPhoneNumber(phone);
         if (user == null) {
@@ -76,11 +76,16 @@ public class PostService {
             throw new InvalidDataException("Invalid post data");
         }
 
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        return savedPost;
 
     }
 
-    public void delete(long postId, User me) throws NotFoundException, AccessDeniedException {
+    public void delete(long postId, String userPhone) throws NotFoundException, AccessDeniedException {
+        User me = userRepository.findByPhoneNumber(userPhone);
+        if (me == null)
+            throw new AccessDeniedException("Invalid token. User not found");
+
         Post post = postRepository.findById(postId).orElse(null);
         if (post == null)
             throw new NotFoundException("Post not found");
@@ -110,11 +115,18 @@ public class PostService {
         }
     }
 
-    public GetResult get(int page, int size, String city, String street, Integer houseNumber, Character houseLetter,
+    public GetResult getByUserPhoneNumber(String phoneNumber, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postRepository.findByUser_PhoneNumber(phoneNumber, pageable);
+        return new GetResult(postPage.getContent(), postPage.getTotalPages());
+    }
+
+    public GetResult getByFilterParams(int page, int size, String city, String street, Integer houseNumber,
+            Character houseLetter,
             Double minArea,
             Double maxArea, Double minPrice, Double maxPrice, Integer roomNumber, Integer minFloor, Integer maxFloor,
             String stationName, Integer branchNumber) {
-        // Getting posts from database with pagination
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage = postRepository.findByMany(city, street, houseNumber, houseLetter, minArea, maxArea,
                 minPrice,

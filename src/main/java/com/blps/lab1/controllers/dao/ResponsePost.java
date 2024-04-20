@@ -1,14 +1,14 @@
-package com.blps.lab1.controllers;
+package com.blps.lab1.controllers.dao;
 
 import java.util.Date;
 
 import com.blps.lab1.model.beans.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponsePost {
@@ -17,9 +17,8 @@ public class ResponsePost {
         this.id = post.getId();
         this.creationDate = post.getCreationDate();
         this.pathsToPhotos = post.getPathsToPhotos();
-        // this.paidUntil = post.getPaidUntil();
+        this.paidUntil = post.getPaidUntil();
         this.user = new ResponseUser(post.getUser());
-
         this.title = post.getTitle();
         this.description = post.getDescription();
         this.price = post.getPrice();
@@ -32,11 +31,14 @@ public class ResponsePost {
 
     private Long id;
 
+    // date of building creation
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private Date creationDate;
 
-    private String[] pathsToPhotos;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private Date paidUntil;
 
-    // private Date paidUntil;
+    private String[] pathsToPhotos;
 
     private ResponseUser user;
 
