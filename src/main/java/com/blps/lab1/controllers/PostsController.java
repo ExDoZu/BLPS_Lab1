@@ -1,5 +1,6 @@
 package com.blps.lab1.controllers;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import com.blps.lab1.controllers.dto.ReceivePost;
 import com.blps.lab1.controllers.dto.ResponsePost;
 import com.blps.lab1.controllers.dto.ResponseSimplePost;
 import com.blps.lab1.exceptions.AccessDeniedException;
+import com.blps.lab1.exceptions.InvalidDataException;
 import com.blps.lab1.exceptions.NotFoundException;
 import com.blps.lab1.model.beans.Post;
 import com.blps.lab1.model.beans.User;
@@ -72,6 +74,8 @@ public class PostsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestHeader("authorization") String token) {
+        if (size <= 0)
+            return ResponseEntity.badRequest().body("Invalid page size");
         String phone;
         try {
             phone = token.split(":")[0];
@@ -210,6 +214,8 @@ public class PostsController {
             String stationName,
             Integer branchNumber) {
 
+        if (size <= 0)
+            return ResponseEntity.badRequest().body("Invalid page size");
         GetResult getResult = postService.getByFilterParams(
                 page, size, city,
                 street, houseNumber, houseLetter,

@@ -37,7 +37,8 @@ public class ModerationController {
             @RequestHeader("authorization") String token,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-
+        if (size <= 0)
+            return ResponseEntity.badRequest().body("Invalid page size");
         String phone;
         try {
             phone = token.split(":")[0];
