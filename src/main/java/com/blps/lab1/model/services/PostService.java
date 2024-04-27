@@ -44,11 +44,14 @@ public class PostService {
 
         if (post.getId() != null) {
             Post savedPost = postRepository.findById(post.getId()).orElse(null);
+
             if (savedPost == null)
                 throw new NotFoundException("Post not found");
 
             if (savedPost.getUser().getId() != user.getId())
                 throw new AccessDeniedException("You can't edit this post. It's not yours");
+
+            post.setPaidUntil(savedPost.getPaidUntil());
         }
 
         Address address = addressRepository.findById(addressID).orElse(null);
