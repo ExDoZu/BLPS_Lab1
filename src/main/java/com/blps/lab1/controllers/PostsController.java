@@ -139,13 +139,20 @@ public class PostsController {
         Long addressID = entity.getAddressId();
         Long metroID = entity.getMetroId();
 
+        Post newPost;
         try {
-            postService.post(phone, addressID, metroID, post);
-        } catch (Exception e) {
+            newPost = postService.post(phone, addressID, metroID, post);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (InvalidDataException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new ResponsePost(newPost));
     }
 
     @GetMapping("/posts/{postId}")
