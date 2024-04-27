@@ -31,7 +31,6 @@ public class ResponsePost {
 
     private Long id;
 
-    // date of building creation
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private Date creationDate;
 
