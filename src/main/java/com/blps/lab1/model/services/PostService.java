@@ -133,19 +133,19 @@ public class PostService {
                 maxPrice, roomNumber, minFloor, maxFloor, stationName, branchNumber, pageable);
 
         List<Post> posts = postPage.getContent();
-        List<Post> finalPosts = new ArrayList<>();
+        // List<Post> finalPosts = new ArrayList<>();
 
-        for (Post post : posts) {
-            if (post.getArchived())
-                continue;
-            if (post.getApproved() == null || post.getApproved() == false)
-                continue;
-            if (post.getPaidUntil() == null || post.getPaidUntil().before(Date.from(java.time.Instant.now())))
-                continue;
-            finalPosts.add(post);
-        }
+        // for (Post post : posts) {
+        //     if (post.getArchived())
+        //         continue;
+        //     if (post.getApproved() == null || post.getApproved() == false)
+        //         continue;
+        //     if (post.getPaidUntil() == null || post.getPaidUntil().before(Date.from(java.time.Instant.now())))
+        //         continue;
+        //     finalPosts.add(post);
+        // }
 
-        return new GetResult(finalPosts, postPage.getTotalPages());
+        return new GetResult(posts, postPage.getTotalPages());
     }
 
 }

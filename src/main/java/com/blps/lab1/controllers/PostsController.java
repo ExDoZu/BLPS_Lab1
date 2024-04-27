@@ -150,7 +150,7 @@ public class PostsController {
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<?> getPost(
-            @PathVariable("postId") Long postId,
+            @PathVariable("postId") long postId,
             @RequestHeader("authorization") String token) {
 
         boolean noUser;
@@ -202,14 +202,18 @@ public class PostsController {
             String stationName,
             Integer branchNumber) {
 
-        GetResult getResult = postService.getByFilterParams(page, size, city, street, houseNumber, houseLetter, minArea,
-                maxArea,
-                minPrice, maxPrice, roomNumber, minFloor, maxFloor, stationName, branchNumber);
+        GetResult getResult = postService.getByFilterParams(
+                page, size, city,
+                street, houseNumber, houseLetter,
+                minArea, maxArea, minPrice,
+                maxPrice, roomNumber, minFloor,
+                maxFloor, stationName, branchNumber);
 
         List<ResponseSimplePost> responsePosts = new ArrayList<>();
         for (Post post : getResult.getPosts()) {
             responsePosts.add(new ResponseSimplePost(post));
         }
+
         if (page >= getResult.getTotalPages())
             return ResponseEntity.badRequest().body("No such page");
         var response = new HashMap<String, Object>();

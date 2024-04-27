@@ -14,6 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         @Query("select p from Post p " +
                         "inner join fetch p.address a " +
                         "left join fetch p.metro m " +
+                        "inner join fetch m.address ma" +
                         "inner join fetch p.user u " +
                         "where " +
                         "(:city is null or a.city = :city) " +
@@ -28,7 +29,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                         "and (:min_floor is null or p.floor >= :min_floor) " +
                         "and (:max_floor is null or p.floor <= :max_floor) " +
                         "and (:station_name is null or m.name = :station_name) " +
-                        "and (:branch_number is null or m.branchNumber = :branch_number)")
+                        "and (:branch_number is null or m.branchNumber = :branch_number)" +
+
+                        "and (p.paidUntil > CURRENT_TIMESTAMP) and (p.archived=false) and (p.approved=true)")
         Page<Post> findByMany(
                         @Param("city") String city,
                         @Param("street") String street,
