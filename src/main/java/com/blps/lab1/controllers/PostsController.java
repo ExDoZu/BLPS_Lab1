@@ -120,7 +120,8 @@ public class PostsController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        return ResponseEntity.ok(new ResponsePost(savedPost));
+        URI location = URI.create("/posts/" + String.valueOf(savedPost.getId()));
+        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/posts")
