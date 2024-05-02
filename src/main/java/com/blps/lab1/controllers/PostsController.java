@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +31,9 @@ import com.blps.lab1.model.repository.UserRepository;
 import com.blps.lab1.model.services.PostService;
 import com.blps.lab1.model.services.PostService.GetResult;
 
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RequiredArgsConstructor
 @RestController
@@ -128,8 +129,9 @@ public class PostsController {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/posts")
+    @PutMapping("/posts/{postId}")
     public ResponseEntity<?> updatePost(
+            @PathVariable long postId,
             @RequestBody ReceivePost entity,
             @RequestHeader("authorization") String token) {
 
@@ -140,7 +142,8 @@ public class PostsController {
             return ResponseEntity.badRequest().body("Invalid token");
         }
 
-        Post post = entity.toPostNoFKwithID();
+        Post post = entity.toPostNoFK();
+        post.setId(postId);
         Long addressID = entity.getAddressId();
         Long metroID = entity.getMetroId();
 
@@ -198,8 +201,8 @@ public class PostsController {
 
     @GetMapping("/posts")
     public ResponseEntity<?> getPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "0") @Min(value = 0) int page,
+            @RequestParam(defaultValue = "10") @Min(value = 1) int size,
             String city,
             String street,
             Integer houseNumber,
@@ -214,8 +217,6 @@ public class PostsController {
             String stationName,
             Integer branchNumber) {
 
-        if (size <= 0)
-            return ResponseEntity.badRequest().body("Invalid page size");
         GetResult getResult = postService.getByFilterParams(
                 page, size, city,
                 street, houseNumber, houseLetter,

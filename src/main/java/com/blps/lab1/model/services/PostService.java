@@ -1,6 +1,5 @@
 package com.blps.lab1.model.services;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -139,13 +138,14 @@ public class PostService {
         // List<Post> finalPosts = new ArrayList<>();
 
         // for (Post post : posts) {
-        //     if (post.getArchived())
-        //         continue;
-        //     if (post.getApproved() == null || post.getApproved() == false)
-        //         continue;
-        //     if (post.getPaidUntil() == null || post.getPaidUntil().before(Date.from(java.time.Instant.now())))
-        //         continue;
-        //     finalPosts.add(post);
+        // if (post.getArchived())
+        // continue;
+        // if (post.getApproved() == null || post.getApproved() == false)
+        // continue;
+        // if (post.getPaidUntil() == null ||
+        // post.getPaidUntil().before(Date.from(java.time.Instant.now())))
+        // continue;
+        // finalPosts.add(post);
         // }
 
         return new GetResult(posts, postPage.getTotalPages());

@@ -9,8 +9,6 @@ import lombok.*;
 @Setter
 public class ReceivePost {
 
-    private Long id;
-
     private String[] pathsToPhotos;
 
     // Flat fields
@@ -55,13 +53,6 @@ public class ReceivePost {
         post.setRoomNumber(roomNumber);
         post.setArea(area);
         post.setFloor(floor);
-        return post;
-    }
-
-    // No Foreign Key - No Metro and no Address fields
-    public Post toPostNoFKwithID() {
-        Post post = toPostNoFK();
-        post.setId(id);
         return post;
     }
 
